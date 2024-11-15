@@ -1,0 +1,88 @@
+Date : 2024-10-28 21:22:34
+Directory : d:\projects\Dermalens
+Total : 41 files,  5863 codes, 39 comments, 158 blanks, all 6060 lines
+
+Languages
++-----------------------+------------+------------+------------+------------+------------+
+| language              | files      | code       | comment    | blank      | total      |
++-----------------------+------------+------------+------------+------------+------------+
+| JSON                  |          4 |      4,553 |          0 |          4 |      4,557 |
+| vue                   |         13 |        659 |         14 |         84 |        757 |
+| JavaScript            |         18 |        627 |         25 |         66 |        718 |
+| HTML                  |          1 |         13 |          0 |          1 |         14 |
+| Markdown              |          1 |          3 |          0 |          3 |          6 |
+| Environment Variables |          1 |          3 |          0 |          0 |          3 |
+| CSS                   |          1 |          3 |          0 |          0 |          3 |
+| XML                   |          2 |          2 |          0 |          0 |          2 |
++-----------------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                        | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                           |         41 |      5,863 |         39 |        158 |      6,060 |
+| . (Files)                                                   |          7 |      2,766 |          1 |          9 |      2,776 |
+| backend                                                     |         15 |      2,343 |         21 |         57 |      2,421 |
+| backend (Files)                                             |          4 |      1,859 |          4 |         10 |      1,873 |
+| backend\config                                              |          2 |         18 |          3 |          6 |         27 |
+| backend\controllers                                         |          2 |        241 |         11 |         13 |        265 |
+| backend\middlewares                                         |          1 |         16 |          3 |          6 |         25 |
+| backend\models                                              |          3 |         42 |          0 |          9 |         51 |
+| backend\routes                                              |          3 |        167 |          0 |         13 |        180 |
+| public                                                      |          1 |          1 |          0 |          0 |          1 |
+| src                                                         |         18 |        753 |         17 |         92 |        862 |
+| src (Files)                                                 |          3 |         36 |          1 |          4 |         41 |
+| src\assets                                                  |          1 |          1 |          0 |          0 |          1 |
+| src\components                                              |          9 |        577 |         12 |         70 |        659 |
+| src\router                                                  |          1 |         29 |          1 |          4 |         34 |
+| src\store                                                   |          1 |         45 |          1 |          2 |         48 |
+| src\views                                                   |          3 |         65 |          2 |         12 |         79 |
++-------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------+-----------------------+------------+------------+------------+------------+
+| filename                                                    | language              | code       | comment    | blank      | total      |
++-------------------------------------------------------------+-----------------------+------------+------------+------------+------------+
+| d:\projects\Dermalens\README.md                             | Markdown              |          3 |          0 |          3 |          6 |
+| d:\projects\Dermalens\backend\config.env                    | Environment Variables |          3 |          0 |          0 |          3 |
+| d:\projects\Dermalens\backend\config\db.js                  | JavaScript            |          6 |          0 |          2 |          8 |
+| d:\projects\Dermalens\backend\config\multer.js              | JavaScript            |         12 |          3 |          4 |         19 |
+| d:\projects\Dermalens\backend\controllers\authController.js | JavaScript            |         51 |          7 |          7 |         65 |
+| d:\projects\Dermalens\backend\controllers\postController.js | JavaScript            |        190 |          4 |          6 |        200 |
+| d:\projects\Dermalens\backend\middlewares\autherizer.js     | JavaScript            |         16 |          3 |          6 |         25 |
+| d:\projects\Dermalens\backend\models\medical.js             | JavaScript            |          0 |          0 |          1 |          1 |
+| d:\projects\Dermalens\backend\models\token.js               | JavaScript            |         24 |          0 |          5 |         29 |
+| d:\projects\Dermalens\backend\models\user.js                | JavaScript            |         18 |          0 |          3 |         21 |
+| d:\projects\Dermalens\backend\package-lock.json             | JSON                  |      1,807 |          0 |          1 |      1,808 |
+| d:\projects\Dermalens\backend\package.json                  | JSON                  |         22 |          0 |          1 |         23 |
+| d:\projects\Dermalens\backend\routes\authRoutes.js          | JavaScript            |          6 |          0 |          3 |          9 |
+| d:\projects\Dermalens\backend\routes\postRoutes.js          | JavaScript            |          8 |          0 |          4 |         12 |
+| d:\projects\Dermalens\backend\routes\testRoutes.js          | JavaScript            |        153 |          0 |          6 |        159 |
+| d:\projects\Dermalens\backend\server.js                     | JavaScript            |         27 |          4 |          8 |         39 |
+| d:\projects\Dermalens\index.html                            | HTML                  |         13 |          0 |          1 |         14 |
+| d:\projects\Dermalens\package-lock.json                     | JSON                  |      2,696 |          0 |          1 |      2,697 |
+| d:\projects\Dermalens\package.json                          | JSON                  |         28 |          0 |          1 |         29 |
+| d:\projects\Dermalens\postcss.config.js                     | JavaScript            |          6 |          0 |          1 |          7 |
+| d:\projects\Dermalens\public\vite.svg                       | XML                   |          1 |          0 |          0 |          1 |
+| d:\projects\Dermalens\src\App.vue                           | vue                   |         17 |          0 |          2 |         19 |
+| d:\projects\Dermalens\src\assets\vue.svg                    | XML                   |          1 |          0 |          0 |          1 |
+| d:\projects\Dermalens\src\components\LoginCard.vue          | vue                   |        106 |          6 |         22 |        134 |
+| d:\projects\Dermalens\src\components\about_us.vue           | vue                   |         48 |          0 |          5 |         53 |
+| d:\projects\Dermalens\src\components\analysis.vue           | vue                   |         67 |          0 |          9 |         76 |
+| d:\projects\Dermalens\src\components\footer.vue             | vue                   |         14 |          0 |          1 |         15 |
+| d:\projects\Dermalens\src\components\navbar.vue             | vue                   |         21 |          2 |          3 |         26 |
+| d:\projects\Dermalens\src\components\navbar_test.vue        | vue                   |         36 |          2 |          5 |         43 |
+| d:\projects\Dermalens\src\components\test.vue               | vue                   |         81 |          0 |          1 |         82 |
+| d:\projects\Dermalens\src\components\upload.vue             | vue                   |         93 |          0 |         11 |        104 |
+| d:\projects\Dermalens\src\components\upload_preview.vue     | vue                   |        111 |          2 |         13 |        126 |
+| d:\projects\Dermalens\src\main.js                           | JavaScript            |         16 |          1 |          2 |         19 |
+| d:\projects\Dermalens\src\router\router.js                  | JavaScript            |         29 |          1 |          4 |         34 |
+| d:\projects\Dermalens\src\store\index.js                    | JavaScript            |         45 |          1 |          2 |         48 |
+| d:\projects\Dermalens\src\style.css                         | CSS                   |          3 |          0 |          0 |          3 |
+| d:\projects\Dermalens\src\views\about.vue                   | vue                   |         18 |          1 |          4 |         23 |
+| d:\projects\Dermalens\src\views\dashboard.vue               | vue                   |         25 |          1 |          4 |         30 |
+| d:\projects\Dermalens\src\views\home.vue                    | vue                   |         22 |          0 |          4 |         26 |
+| d:\projects\Dermalens\tailwind.config.js                    | JavaScript            |          7 |          1 |          1 |          9 |
+| d:\projects\Dermalens\vite.config.js                        | JavaScript            |         13 |          0 |          1 |         14 |
+| Total                                                       |                       |      5,863 |         39 |        158 |      6,060 |
++-------------------------------------------------------------+-----------------------+------------+------------+------------+------------+
