@@ -1,23 +1,9 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-// import db from "../config/db.js";
 import User from "../models/user.js";
-import mongoose from "mongoose";
 import Token from "../models/token.js";
-import dotenv from "dotenv";
-dotenv.config({
-  path: "../../.env",
-});
-const dbURI = process.env.MONGO_URI;
-// mongoose
-//   .connect(dbURI)
 
-//   .then(() => console.log("MongoDB connected"))
-//   .catch((err) => console.log(err));
-// console.log(dbURI);
-// console.log(`userCollection: ${userCollection}`);
-
-const secret_key = ".env_to_be_added";
+const secret_key = process.env.JWT_SECRET;
 const authController = {
   login: async (req, res) => {
     try {
@@ -27,6 +13,8 @@ const authController = {
       if (
         !email ||
         !password ||
+        email.length > 254 ||
+        password.length > 72 ||
         typeof email !== "string" ||
         typeof password !== "string"
       ) {
@@ -35,7 +23,10 @@ const authController = {
       }
 
       // Sanitize email (convert to lowercase and trim)
-      const sanitizedEmail = email.toLowerCase().trim();
+      const sanitizedEmail = email.toLowerCase().trim().slice(0, 254);
+      if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(sanitizedEmail)) {
+        return res.status(400).json({ message: "Invalid email format" });
+      }
 
       const user = await User.findOne({ email: sanitizedEmail });
       if (!user) {
@@ -80,6 +71,9 @@ const authController = {
         !name ||
         !email ||
         !password ||
+        name.length > 100 ||
+        email.length > 254 ||
+        password.length > 72 ||
         typeof name !== "string" ||
         typeof email !== "string" ||
         typeof password !== "string"
@@ -94,8 +88,11 @@ const authController = {
       }
 
       // Sanitize inputs
-      const sanitizedName = name.trim();
-      const sanitizedEmail = email.toLowerCase().trim();
+      const sanitizedName = name.trim().slice(0, 100).replace(/[<>]/g, '');
+      const sanitizedEmail = email.toLowerCase().trim().slice(0, 254);
+      if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(sanitizedEmail)) {
+        return res.status(400).json({ message: "Invalid email format" });
+      }
 
       // Check if user already exists with sanitized email
       const existingUser = await User.findOne({ email: sanitizedEmail });

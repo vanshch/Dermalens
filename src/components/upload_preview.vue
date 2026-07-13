@@ -10,7 +10,7 @@
                     <span class="font-semibold">Click to upload</span> or drag and drop
                 </p>
                 <p class="text-xs text-gray-400">
-                    SVG, PNG, JPG or GIF
+                    SVG, PNG, JPG or GIF (Max size: 2MB)
                 </p>
             </div>
             <input id="file-upload" type="file" class="hidden" @change="handleFileSelect" accept="image/*" />
@@ -36,8 +36,7 @@
         </div>
 
         <!-- <button @click="()=>{uploadFile,removeFile}"  -->
-        <button @click="uploadFile" 
-
+        <button @click="uploadFile"
             class="mt-4 w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded-md shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
             :disabled="!selectedFile">
             Upload
@@ -63,6 +62,7 @@ const isAnalyzed = ref(false)
 const isDragging = ref(false)
 const selectedFile = ref(null)
 const imagePreview = ref(null)
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 let analysis_prop = ref({
     name: 'Common Cold',
     severity: 'low',
@@ -76,14 +76,24 @@ const handleDrop = (e) => {
     isDragging.value = false
     const files = e.dataTransfer.files
     if (files.length > 0) {
-        selectedFile.value = files[0]
+        const file = files[0];
+        if (file.size <= MAX_FILE_SIZE) {
+            selectedFile.value = file;
+        } else {
+            alert('File size exceeds the 2MB limit.');
+        }
     }
 }
 
 const handleFileSelect = (e) => {
     const files = e.target.files
     if (files.length > 0) {
-        selectedFile.value = files[0]
+        const file = files[0];
+        if (file.size <= MAX_FILE_SIZE) {
+            selectedFile.value = file;
+        } else {
+            alert('File size exceeds the 2MB limit.');
+        }
     }
 }
 

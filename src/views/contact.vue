@@ -15,44 +15,44 @@
         <div class="container px-4 md:px-6">
           <h1 class="text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-8">Contact Us</h1>
           <div class="grid gap-10 sm:grid-cols-2">
-            <div class="space-y-6">
+            <div class="space-y-6 flex flex-col items-center">
               <h2 class="text-2xl font-bold">Our Team</h2>
-              <div class="space-y-4">
+              <div class="space-y-4 flex flex-col items-center">
                 <div class="flex items-center space-x-4">
                   <user-icon class="h-6 w-6 text-blue-500" />
                   <div>
-                    <h3 class="font-semibold">Dr. Jane Smith</h3>
-                    <p class="text-sm text-gray-400">Lead Dermatologist</p>
-                    <a href="mailto:jane.smith@dermalens.com" class="text-blue-400 hover:underline">jane.smith@dermalens.com</a>
+                    <h3 class="font-semibold">Vansh</h3>
+                    <p class="text-sm text-gray-400">Lead Developer</p>
+                    <a href="mailto:vansh@dermalens.com" class="text-blue-400 hover:underline">vansh@dermalens.com</a>
                   </div>
                 </div>
                 <div class="flex items-center space-x-4">
                   <user-icon class="h-6 w-6 text-blue-500" />
                   <div>
-                    <h3 class="font-semibold">John Doe</h3>
+                    <h3 class="font-semibold">Saiyam</h3>
                     <p class="text-sm text-gray-400">AI Research Lead</p>
-                    <a href="mailto:john.doe@dermalens.com" class="text-blue-400 hover:underline">john.doe@dermalens.com</a>
+                    <a href="mailto:saiyam@dermalens.com" class="text-blue-400 hover:underline">saiyam@dermalens.com</a>
                   </div>
                 </div>
                 <div class="flex items-center space-x-4">
                   <user-icon class="h-6 w-6 text-blue-500" />
                   <div>
-                    <h3 class="font-semibold">Sarah Johnson</h3>
+                    <h3 class="font-semibold">Shaurya</h3>
                     <p class="text-sm text-gray-400">Customer Relations Manager</p>
-                    <a href="mailto:sarah.johnson@dermalens.com" class="text-blue-400 hover:underline">sarah.johnson@dermalens.com</a>
+                    <a href="mailto:shaurya@dermalens.com" class="text-blue-400 hover:underline">shaurya@dermalens.com</a>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="space-y-6">
+            <div class="space-y-6 flex flex-col items-center">
               <h2 class="text-2xl font-bold">Customer Care</h2>
-              <div class="space-y-4">
+              <div class="space-y-4 flex flex-col items-center">
                 <div class="flex items-center space-x-4">
                   <phone-icon class="h-6 w-6 text-blue-500" />
                   <div>
                     <h3 class="font-semibold">Phone Support</h3>
                     <p class="text-sm text-gray-400">Monday to Friday, 9AM - 5PM EST</p>
-                    <a href="tel:+18001234567" class="text-blue-400 hover:underline">+1 (800) 123-4567</a>
+                    <a href="tel:+917988939428" class="text-blue-400 hover:underline">+91 7988939428</a>
                   </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -61,14 +61,6 @@
                     <h3 class="font-semibold">Email Support</h3>
                     <p class="text-sm text-gray-400">24/7 Support</p>
                     <a href="mailto:support@dermalens.com" class="text-blue-400 hover:underline">support@dermalens.com</a>
-                  </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                  <message-circle-icon class="h-6 w-6 text-blue-500" />
-                  <div>
-                    <h3 class="font-semibold">Live Chat</h3>
-                    <p class="text-sm text-gray-400">Available on our website</p>
-                    <button @click="openLiveChat" class="text-blue-400 hover:underline">Start Chat</button>
                   </div>
                 </div>
               </div>
@@ -115,7 +107,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { CameraIcon, UserIcon, PhoneIcon, MailIcon, MessageCircleIcon } from 'lucide-vue-next'
+import { CameraIcon, UserIcon, PhoneIcon, MailIcon } from 'lucide-vue-next'
 
 const form = ref({
   name: '',
@@ -131,10 +123,6 @@ const submitForm = () => {
   // You might want to show a success message to the user here
 }
 
-const openLiveChat = () => {
-  // Implement live chat functionality
-  console.log('Opening live chat')
-}
 </script>
 
 <style scoped>

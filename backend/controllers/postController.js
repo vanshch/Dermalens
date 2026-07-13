@@ -1,12 +1,66 @@
 import express from "express";
 import multer from "multer";
 import path from "path";
-import formData from "form-data";
-import axios from "axios";
 import fs from "fs";
-let data = new formData();
+import * as tf from "@tensorflow/tfjs-node";
+import { analyzeSkinImage } from "../gemini_test.js";
+
+const CLASS_NAMES = [
+  "Acne and Rosacea",
+  "Actinic Keratosis Basal Cell Carcinoma",
+  "Atopic Dermatitis",
+  "Bullous Disease",
+  "Cellulitis Impetigo",
+  "Eczema",
+  "Exanthems and Drug Eruptions",
+  "Hair Loss Alopecia",
+  "Herpes HPV and STDs",
+  "Light Diseases and Pigmentation",
+  "Lupus and Connective Tissue",
+  "Melanoma Skin Cancer Nevi and Moles",
+  "Nail Fungus and Diseases",
+  "Poison Ivy and Contact Dermatitis",
+  "Psoriasis Lichen Planus",
+  "Scabies Lyme Disease",
+  "Seborrheic Keratoses",
+  "Systemic Disease",
+  "Tinea Ringworm Candidiasis",
+  "Urticaria Hives",
+  "Vascular Tumors",
+  "Vasculitis",
+  "Warts Molluscum"
+];
+
+const MODEL_PATH = process.env.MODEL_PATH || "file://../Dermalens-model/model.json";
+
+// Add model-related functions
+async function loadModel() {
+  const model = await tf.loadLayersModel(MODEL_PATH);
+  return model;
+}
+
+async function preprocessImage(imagePath) {
+  const imageBuffer = fs.readFileSync(imagePath);
+  const decodedImage = tf.node.decodeImage(imageBuffer, 3);
+  const resizedImage = tf.image.resizeBilinear(decodedImage, [224, 224]);
+  const normalizedImage = resizedImage.div(255.0);
+  return normalizedImage.expandDims(0);
+}
+
+async function getModelPredictions(imagePath) {
+  const model = await loadModel();
+  const preprocessedImage = await preprocessImage(imagePath);
+  const predictions = model.predict(preprocessedImage);
+  const predictionValues = predictions.dataSync();
+
+  return CLASS_NAMES.map((className, index) => ({
+    className,
+    probability: predictionValues[index],
+  })).sort((a, b) => b.probability - a.probability);
+}
 
 const disease = [
+  // main diseases 
   {
     name: "Vitiligo",
     severity: "medium",
@@ -143,53 +197,234 @@ const disease = [
     medicines: ["Lactic acid cream", "Salicylic acid"],
     specialistNumber: "+91 9876543370",
   },
+  // diseases for model 
+  {
+    "name": "Acne and Rosacea",
+    "severity": "Mild to Moderate",
+    "symptoms": ["Pimples, blackheads, whiteheads", "Redness, flushing, and bumps on the face"],
+    "remedies": ["Over-the-counter medications, prescription medications, lifestyle changes"],
+    "medicines": ["Benzoyl peroxide, salicylic acid, retinoids"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Actinic Keratosis Basal Cell Carcinoma",
+    "severity": "Moderate to Severe",
+    "symptoms": ["Rough, scaly patches on sun-exposed skin", "Open sores that bleed or crust"],
+    "remedies": ["Cryotherapy, laser therapy, topical medications"],
+    "medicines": ["Fluorouracil cream, imiquimod cream"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Atopic Dermatitis",
+    "severity": "Mild to Severe",
+    "symptoms": ["Itchy, red, scaly skin", "Dry, cracked skin"],
+    "remedies": ["Moisturizers, topical corticosteroids, oral medications"],
+    "medicines": ["Hydrocortisone cream, topical calcineurin inhibitors"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Bullous Disease",
+    "severity": "Moderate to Severe",
+    "symptoms": ["Blisters on the skin", "Pain and discomfort"],
+    "remedies": ["Topical corticosteroids, oral corticosteroids, immunosuppressant medications"],
+    "medicines": ["Prednisone, azathioprine"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Cellulitis Impetigo",
+    "severity": "Mild to Moderate",
+    "symptoms": ["Red, swollen, and painful skin", "Pus-filled blisters"],
+    "remedies": ["Antibiotics"],
+    "medicines": ["Cephalexin, dicloxacillin"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Eczema",
+    "severity": "Mild to Severe",
+    "symptoms": ["Itchy, red, scaly skin"],
+    "remedies": ["Moisturizers, topical corticosteroids, oral medications"],
+    "medicines": ["Hydrocortisone cream, topical calcineurin inhibitors"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Exanthems and Drug Eruptions",
+    "severity": "Mild to Severe",
+    "symptoms": ["Rash, hives, itching"],
+    "remedies": ["Antihistamines, topical corticosteroids, avoiding triggers"],
+    "medicines": ["Diphenhydramine, cetirizine"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Hair Loss Alopecia",
+    "severity": "Mild to Severe",
+    "symptoms": ["Hair loss on the scalp or other parts of the body"],
+    "remedies": ["Minoxidil, finasteride, hair transplant"],
+    "medicines": ["Minoxidil, finasteride"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Herpes HPV and STDs",
+    "severity": "Mild to Severe",
+    "symptoms": ["Blisters, sores, warts, genital discharge"],
+    "remedies": ["Antiviral medications, topical treatments"],
+    "medicines": ["Acyclovir, valacyclovir"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Light Diseases and Pigmentation",
+    "severity": "Mild to Moderate",
+    "symptoms": ["Dark spots, light spots, uneven skin tone"],
+    "remedies": ["Sunscreen, topical creams, laser therapy"],
+    "medicines": ["Hydroquinone cream, tretinoin cream"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Lupus and Connective Tissue Diseases",
+    "severity": "Moderate to Severe",
+    "symptoms": ["Rash, joint pain, fatigue, fever"],
+    "remedies": ["Immunosuppressant medications, corticosteroids, antimalarial drugs"],
+    "medicines": ["Hydroxychloroquine, prednisone, methotrexate"],
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Melanoma Skin Cancer Nevi and Moles",
+    "severity": "Moderate to Severe",
+    "symptoms": ["Abnormal moles, skin cancer"],
+    "remedies": "Surgery, radiation therapy, chemotherapy",
+    "medicines": "Depends on the specific type of cancer",
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Nail Fungus and Diseases",
+    "severity": "Mild to Moderate",
+    "symptoms": "Thick, discolored, and brittle nails",
+    "remedies": "Topical antifungal medications, oral antifungal medications",
+    "medicines": "Terbinafine, itraconazole",
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Poison Ivy and Contact Dermatitis",
+    "severity": "Mild to Moderate",
+    "symptoms": "Itchy, red rash",
+    "remedies": "Topical corticosteroids, calamine lotion, oatmeal baths",
+    "medicines": "Hydrocortisone cream",
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Psoriasis Lichen Planus",
+    "severity": "Mild to Severe",
+    "symptoms": "Red, scaly patches on the skin",
+    "remedies": "Topical corticosteroids, light therapy, systemic medications",
+    "medicines": "Calcipotriene, tazarotene, methotrexate",
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Scabies Lyme Disease",
+    "severity": "Mild to Moderate",
+    "symptoms": "Intense itching, skin rash",
+    "remedies": "Topical scabicide medications, oral antibiotics",
+    "medicines": "Permethrin cream, doxycycline",
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Seborrheic Keratoses",
+    "severity": "Mild",
+    "symptoms": "Warty, crusty growths on the skin",
+    "remedies": "Usually no treatment needed, but can be removed for cosmetic reasons",
+    "medicines": "N/A",
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Systemic Disease",
+    "severity": "Variable",
+    "symptoms": "Depends on the specific systemic disease",
+    "remedies": "Depends on the specific systemic disease",
+    "medicines": "Depends on the specific systemic disease",
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Tinea Ringworm Candidiasis",
+    "severity": "Mild to Moderate",
+    "symptoms": "Itchy, red, scaly patches on the skin",
+    "remedies": "Topical antifungal medications, oral antifungal medications",
+    "medicines": "Clotrimazole cream, terbinafine cream, fluconazole",
+    "specialistNumber": "+91 1234567890"
+  },
+  {
+    "name": "Urticaria Hives",
+    "severity": "Mild to Severe",
+    "symptoms": "Itchy, red, raised welts on the skin",
+    "remedies": "Antihistamines, topical corticosteroids",
+    "medicines": "Diphenhydramine, cetirizine, hydrocortisone cream",
+    "specialistNumber": "+91 1234567890"
+  },
+{
+  "name": "Vasculitis",
+  "severity": "Moderate to Severe",
+  "symptoms": ["Red, tender, or painful skin, often with a rash", "Fever, fatigue, and weight loss"],
+  "remedies": "Depends on the specific type of vasculitis and its severity. May involve medications to reduce inflammation and suppress the immune system.",
+  "medicines": "Corticosteroids, immunosuppressants, biologic therapies",
+  "specialistNumber": "+91 1234567890"
+},
+{
+  "name": "Warts Molluscum",
+  "severity": "Mild to Moderate",
+  "symptoms": "Small, flesh-colored or pearly bumps on the skin",
+  "remedies": "Often resolve on their own, but treatments like cryotherapy, topical medications, or laser therapy can be used to remove them.",
+  "medicines": "Salicylic acid, cryotherapy, imiquimod cream",
+  "specialistNumber": "+91 1234567890"
+}
+
 ];
 
+const defaultDiseaseData = {
+  name: "Unknown Condition",
+  severity: "undetermined",
+  symptoms: ["Please consult a dermatologist for proper diagnosis"],
+  remedies: ["Seek professional medical advice"],
+  medicines: ["Prescription required"],
+  specialistNumber: "+91 9876543200",
+};
+
 function findDiseaseData(disease, diseaseName) {
-  const diseaseData = disease.find((d) => d.name === diseaseName);
+  if (!diseaseName) return defaultDiseaseData;
+  
+  const diseaseData = disease.find((d) => 
+    d.name.toLowerCase() === diseaseName.toLowerCase() ||
+    diseaseName.toLowerCase().includes(d.name.toLowerCase())
+  );
+  
   console.log(JSON.stringify(diseaseData));
-  return diseaseData;
+  return diseaseData || defaultDiseaseData;
 }
 
 const postController = {
-  image_upload: (req, res) => {
-    console.log("in image_upload")
-    let data = new formData();
+  image_upload: async (req, res) => {
+    console.log("in image_upload");
     if (!req.file) {
       return res.status(400).send("No files were uploaded.");
-    } else {
-      // You can handle the uploaded file here
-      const file = req.file; // Access the uploaded file from `req.file`
+    }
 
-      data.append("image", fs.createReadStream(file.path));
-      // Return a success response with file details
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: "https://www.ailabapi.com/api/portrait/analysis/skin-disease-detection",
-        headers: {
-          "ailabapi-api-key":
-            "05gpshd6KzQB7cyGoDOT4IHCl9kA5BeQPvVEgjVKFRs8SNnJqbc2ULakPi9j7HuA",
-          ...data.getHeaders(),
-        },
-        data: data,
-      };
-      axios
-        .request(config)
-        .then((response) => {
-          // logic after getting response
-          // Extract the required data
-          console.log(response.data.data.results_english);
-          const diseaseNames = Object.keys(response.data.data.results_english);
-          const diseasePercentages = diseaseNames.map(
-            (disease) => response.data.data.results_english[disease]
-          );
-          const diseaseData = findDiseaseData(disease, diseaseNames[0]);
-          res.send({ diseaseNames, diseasePercentages, diseaseData });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    try {
+      // Get predictions from both models
+      const [modelPredictions, geminiPrediction] = await Promise.all([
+        getModelPredictions(req.file.path),
+        analyzeSkinImage(req.file.path)
+      ]);
+
+      const top3Predictions = modelPredictions.slice(0, 3);
+      const modelDiseaseData = findDiseaseData(disease, top3Predictions[0]?.className);
+      const geminiDiseaseData = findDiseaseData(disease, geminiPrediction);
+
+      res.send({
+        modelPredictions: top3Predictions,
+        modelDiseaseData: modelDiseaseData,
+        geminiPrediction: geminiPrediction || "Unknown Condition",
+        geminiDiseaseData: geminiDiseaseData
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error processing image");
     }
   },
   feedback_post: (req, res) => {

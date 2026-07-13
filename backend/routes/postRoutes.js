@@ -5,7 +5,7 @@ import path from "path";
 
 const router = express.Router();
 console.log("in post routes")
-router.post("/image", upload.single("image"), postController.image_upload);
+router.post("/image", upload, postController.image_upload);
 router.post("/feedback", postController.feedback_post);
 
 export default router;

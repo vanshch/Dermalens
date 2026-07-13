@@ -32,12 +32,14 @@
         <ul class="list-disc list-inside text-gray-300">
           <li v-for="medicine in disease.medicines" :key="medicine" class="flex justify-between items-center">
             {{ medicine }}
+            <!--
             <button
               @click="redirectToAppointment"
               class="ml-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
               Buy
             </button>
+            -->
           </li>
         </ul>
       </div>
@@ -83,9 +85,12 @@ const makeAppointment = () => {
   router.push('/commingsoon');
 };
 
+/*
+// Comment out the redirectToAppointment method
 const redirectToAppointment = () => {
   // Implement redirect logic here
   console.log('Redirecting to appointment for', props.disease.name);
   router.push('/commingsoon');
 };
+*/
 </script>
