@@ -8,7 +8,8 @@
       <nav class="ml-auto flex gap-4 sm:gap-6">
         <a href="#features" class="text-sm font-medium hover:underline underline-offset-4 py-2">Features</a>
         <a href="#how-it-works" class="text-sm font-medium hover:underline underline-offset-4 py-2">How It Works</a>
-        <button @click="redirectToLogin" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+        <button @click="redirectToLogin"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
           Login / Sign Up
         </button>
       </nav>
@@ -27,18 +28,16 @@
                 </p>
               </div>
               <div class="flex flex-col gap-2 min-[400px]:flex-row">
-                <button @click="redirectToLogin" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                <button @click="redirectToLogin"
+                  class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                   Try Dermalens Now
                 </button>
               </div>
             </div>
-            <img
-              alt="Hero"
-              class="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
+            <img alt="Hero" class="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
               height="550"
               src="https://plus.unsplash.com/premium_photo-1675869589440-8b3f38dc5fe2?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              width="550"
-            />
+              width="550" />
           </div>
         </div>
       </section>
@@ -84,32 +83,28 @@
             <div class="flex flex-col items-center space-y-2 border border-gray-700 p-4 rounded-lg">
               <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white">1</div>
               <h3 class="text-xl font-bold">Upload Image</h3>
-              <p class="text-sm text-gray-400 text-center">Take a clear photo of your skin concern and upload it to Dermalens.</p>
+              <p class="text-sm text-gray-400 text-center">Take a clear photo of your skin concern and upload it to
+                Dermalens.</p>
             </div>
             <div class="flex flex-col items-center space-y-2 border border-gray-700 p-4 rounded-lg">
               <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white">2</div>
               <h3 class="text-xl font-bold">AI Analysis</h3>
-              <p class="text-sm text-gray-400 text-center">Our AI model analyzes the image to identify potential skin conditions.</p>
+              <p class="text-sm text-gray-400 text-center">Our AI model analyzes the image to identify potential skin
+                conditions.</p>
             </div>
             <div class="flex flex-col items-center space-y-2 border border-gray-700 p-4 rounded-lg">
               <div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white">3</div>
               <h3 class="text-xl font-bold">Get Results</h3>
-              <p class="text-sm text-gray-400 text-center">Receive instant results with probable skin conditions and recommendations.</p>
+              <p class="text-sm text-gray-400 text-center">Receive instant results with probable skin conditions and
+                recommendations.</p>
             </div>
           </div>
         </div>
       </section>
     </main>
-    <footer class="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-700">
+    <footer
+      class="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-700">
       <p class="text-xs text-gray-400">© 2024 Dermalens. All rights reserved.</p>
-      <nav class="sm:ml-auto flex gap-4 sm:gap-6">
-        <router-link to="/terms" class="text-xs hover:underline underline-offset-4 text-gray-400">
-          Terms of Service
-        </router-link>
-        <router-link to="/privacy" class="text-xs hover:underline underline-offset-4 text-gray-400">
-          Privacy
-        </router-link>
-      </nav>
     </footer>
   </div>
 </template>

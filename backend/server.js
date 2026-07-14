@@ -62,6 +62,7 @@ const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB connected successfully");
+    console.log("MongoDB URI:", process.env.MONGO_URI); // Output the URI
   } catch (error) {
     console.error("the process env is ", process.env.MONGO_URI);
     console.error("MongoDB connection error:", error);

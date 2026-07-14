@@ -11,9 +11,7 @@ lerna-debug.log*
 *.env
 # Ignore .env files in subdirectories
 **/*.env
-
-# Backend environment config (non-dotfile, NOT caught by *.env)
-backend/config.env
+# samsung.js
 
 # Node modules
 node_modules
@@ -35,17 +33,11 @@ dist-ssr
 *.sln
 *.sw?
 
-# User-uploaded images (runtime data, not for version control)
-backend/uploads/*
-!backend/uploads/.gitkeep
+# Ignore image uploads
+backend/uploads/*.jpg
+backend/uploads/*.jpeg
+backend/uploads/*.png
 
-# ML model large binary files (use Git LFS or external storage)
-Dermalens-model/*.bin
-Dermalens-model/*.h5
-Dermalens-model/*.dll
-Dermalens-model/node_modules/
-Dermalens-model/package-lock.json
-
-# Junk / stray files
-samsung.js
-.env copy
+# Ignore large model files
+Dermalens-model/tensorflow.dll
+Dermalens-model/my_model.h5

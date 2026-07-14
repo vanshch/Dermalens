@@ -20,17 +20,10 @@
         <div class="mt-12 max-w-md mx-auto">
           <h2 class="text-2xl font-semibold mb-4">Stay Updated</h2>
           <form @submit.prevent="subscribeNewsletter" class="flex flex-col sm:flex-row gap-2">
-            <input
-              v-model="email"
-              type="email"
-              placeholder="Enter your email"
-              required
-              class="flex-grow px-4 py-2 rounded-md bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <button
-              type="submit"
-              class="px-6 py-2 rounded-md bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-            >
+            <input v-model="email" type="email" placeholder="Enter your email" required
+              class="flex-grow px-4 py-2 rounded-md bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button type="submit"
+              class="px-6 py-2 rounded-md bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900">
               Notify Me
             </button>
           </form>
@@ -51,16 +44,9 @@
         </div>
       </div>
     </main>
-    <footer class="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-800">
+    <footer
+      class="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-800">
       <p class="text-xs text-gray-400">© 2024 Dermalens. All rights reserved.</p>
-      <nav class="sm:ml-auto flex gap-4 sm:gap-6">
-        <router-link to="/terms" class="text-xs hover:underline underline-offset-4 text-gray-400">
-          Terms of Service
-        </router-link>
-        <router-link to="/privacy" class="text-xs hover:underline underline-offset-4 text-gray-400">
-          Privacy
-        </router-link>
-      </nav>
     </footer>
   </div>
 </template>

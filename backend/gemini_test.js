@@ -8,7 +8,8 @@ dotenv.config();
 
 async function analyzeSkinImage(imagePath) {
   // Get API key from environment variables with proper error handling
-  const apiKey = process.env.GEMINI_API_KEY;
+//   const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = 'AIzaSyBoSFjyIXtZ7mRjA6r5JFP0CrUrSNxX8_0';
   
   if (!apiKey) {
     throw new Error("Please set the GEMINI_API_KEY environment variable.");
@@ -62,8 +63,10 @@ async function analyzeSkinImage(imagePath) {
   // Consult a dermatologist for accurate diagnosis and treatment.
 }
 
-// Example usage (replace with your image path):
-// const imagePath = 'uploads/your_image.jpg';
-// analyzeSkinImage(imagePath).then(console.log).catch(console.error);
+// Example usage (replace with your image path)
+const imagePath = 'uploads/1732476773776.jpg';
+analyzeSkinImage(imagePath)
+  .then()
+  .catch((error) => console.error("Error:", error));
 
 export { analyzeSkinImage };

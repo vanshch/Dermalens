@@ -1,6 +1,6 @@
 <template>
     <div class="pb-12">
-        <navbar_test :navLinks="navlinks" />
+        <navbar_test :navLinks="navlinks" :isAuthenticated="store.getters.isAuthenticated" />
     </div>
     <!-- <upload /> -->
     <upload_preview />
@@ -30,7 +30,7 @@ if (!store.getters.isAuthenticated) {
 
 const navlinks = [
     { text: 'About', to: '/about', href: '#' },
-    { text: 'contact', to: '/contact', href: '#' },
+    { text: 'Contact', to: '/contact', href: '#' }, // Standardized 'Contact'
     { text: 'FAQ', to: '/faq', href: '#' },
 ];
 

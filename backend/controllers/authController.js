@@ -1,9 +1,24 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+// import db from "../config/db.js";
 import User from "../models/user.js";
+import mongoose from "mongoose";
 import Token from "../models/token.js";
+import dotenv from "dotenv";
+dotenv.config({
+  path: "../../.env",
+});
+const dbURI = process.env.MONGO_URI;
+// mongoose
+//   .connect(dbURI)
 
-const secret_key = process.env.JWT_SECRET;
+//   .then(() => console.log("MongoDB connected"))
+//   .catch((err) => console.log(err));
+// console.log(dbURI);
+// console.log(`userCollection: ${userCollection}`);
+
+// const secret_key = process.env.JWT_SECRET;
+const secret_key = "vansh"
 const authController = {
   login: async (req, res) => {
     try {

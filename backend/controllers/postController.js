@@ -31,7 +31,7 @@ const CLASS_NAMES = [
   "Warts Molluscum"
 ];
 
-const MODEL_PATH = process.env.MODEL_PATH || "file://../Dermalens-model/model.json";
+const MODEL_PATH = "file://D:/projects/Dermalens/Dermalens-model/model.json";
 
 // Add model-related functions
 async function loadModel() {

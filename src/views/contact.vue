@@ -23,7 +23,8 @@
                   <div>
                     <h3 class="font-semibold">Vansh</h3>
                     <p class="text-sm text-gray-400">Lead Developer</p>
-                    <a href="mailto:vansh@dermalens.com" class="text-blue-400 hover:underline">vansh@dermalens.com</a>
+                    <a href="mailto:vchauhan_be23@thapar.edu"
+                      class="text-blue-400 hover:underline">vansh@dermalens.com</a>
                   </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -31,7 +32,8 @@
                   <div>
                     <h3 class="font-semibold">Saiyam</h3>
                     <p class="text-sm text-gray-400">AI Research Lead</p>
-                    <a href="mailto:saiyam@dermalens.com" class="text-blue-400 hover:underline">saiyam@dermalens.com</a>
+                    <a href="mailto:sgupta2_be23@thapar.edu"
+                      class="text-blue-400 hover:underline">saiyam@dermalens.com</a>
                   </div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -39,7 +41,8 @@
                   <div>
                     <h3 class="font-semibold">Shaurya</h3>
                     <p class="text-sm text-gray-400">Customer Relations Manager</p>
-                    <a href="mailto:shaurya@dermalens.com" class="text-blue-400 hover:underline">shaurya@dermalens.com</a>
+                    <a href="mailto:ssingh15_be23@thapar.edu"
+                      class="text-blue-400 hover:underline">shaurya@dermalens.com</a>
                   </div>
                 </div>
               </div>
@@ -60,7 +63,8 @@
                   <div>
                     <h3 class="font-semibold">Email Support</h3>
                     <p class="text-sm text-gray-400">24/7 Support</p>
-                    <a href="mailto:support@dermalens.com" class="text-blue-400 hover:underline">support@dermalens.com</a>
+                    <a href="mailto:support@dermalens.com"
+                      class="text-blue-400 hover:underline">support@dermalens.com</a>
                   </div>
                 </div>
               </div>
@@ -74,15 +78,18 @@
           <form @submit.prevent="submitForm" class="max-w-md mx-auto space-y-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-200">Name</label>
-              <input v-model="form.name" id="name" type="text" required class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+              <input v-model="form.name" id="name" type="text" required
+                class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" />
             </div>
             <div>
               <label for="email" class="block text-sm font-medium text-gray-200">Email</label>
-              <input v-model="form.email" id="email" type="email" required class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" />
+              <input v-model="form.email" id="email" type="email" required
+                class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500" />
             </div>
             <div>
               <label for="message" class="block text-sm font-medium text-gray-200">Message</label>
-              <textarea v-model="form.message" id="message" rows="4" required class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+              <textarea v-model="form.message" id="message" rows="4" required
+                class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-white shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
             </div>
             <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Send Message
@@ -91,16 +98,9 @@
         </div>
       </section>
     </main>
-    <footer class="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-700">
+    <footer
+      class="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-700">
       <p class="text-xs text-gray-400">© 2024 Dermalens. All rights reserved.</p>
-      <nav class="sm:ml-auto flex gap-4 sm:gap-6">
-        <router-link to="/terms" class="text-xs hover:underline underline-offset-4 text-gray-400">
-          Terms of Service
-        </router-link>
-        <router-link to="/privacy" class="text-xs hover:underline underline-offset-4 text-gray-400">
-          Privacy
-        </router-link>
-      </nav>
     </footer>
   </div>
 </template>

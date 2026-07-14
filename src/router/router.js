@@ -7,6 +7,7 @@ import dashboardPage from "../views/dashboard.vue";
 import LandingPage from "../views/landing.vue";
 import ContactPage from "../views/contact.vue";
 import FaqPage from "../views/faq.vue";
+import appointmentPage from "../views/appointment.vue";
 import commingSoonPage from "../views/commingsoon.vue";
 
 // import registerPage from "../views/register.vue";
@@ -57,6 +58,14 @@ const routes = [
     },
   },
 
+  {
+    path: "/appointment",
+    name: "appointment",
+    component: appointmentPage,
+    meta: {
+      requiresAuth: true,
+    },
+  },
   {
     path: "/Contact",
     name: "Contact",

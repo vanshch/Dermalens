@@ -20,7 +20,7 @@
           placeholder="Enter your email" />
 
         <BaseInput v-model="formData.password" id="password" type="password" label="Password" :error="errors.password"
-          placeholder="Enter your password" />
+          placeholder="Enter your password" @keyup.enter="handleSubmit" />
       </form>
     </template>
     <template #footer>
@@ -118,14 +118,20 @@ async function handleSubmit() {
       store.commit('SET_TOKEN', response.token);
       store.commit('SET_LOGGED_IN', true);
       router.push('/dashboard');
+      store.dispatch('login', { token: response.token, isDoctor: response.isDoctor, email: formData.email }); // Dispatch login action with email
     }
   } catch (error) {
     console.error('Authentication error:', error);
 
-    // Check if error is due to already registered user
-    console.log(error.response?.status === 400)
-    console.log(isRegisterMode.value)
-    if (isRegisterMode.value && error.response?.status === 409) {
+    if (error.response?.status === 429) {
+      toast.add({
+        severity: 'error',
+        summary: 'Too Many Attempts',
+        detail: error.response?.data?.message || 'Too many attempts. Please try again later.',
+        life: 5000,
+        position: 'bottom-center'
+      });
+    } else if (isRegisterMode.value && error.response?.status === 409) {
       isRegisterMode.value = false;
       toast.add({
         severity: 'info',

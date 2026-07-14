@@ -11,7 +11,8 @@
 
       <!-- Navigation Links (dynamically generated) -->
       <div class="hidden md:flex space-x-6">
-        <a v-for="link in navLinks" :key="link.text" :href="link.href" class="text-gray-300 hover:text-teal-500">
+        <a v-for="link in displayedNavLinks" :key="link.text" :href="link.href"
+          class="text-gray-300 hover:text-teal-500">
           <router-link :to="link.to">{{ link.text }}</router-link>
         </a>
       </div>
@@ -20,7 +21,8 @@
 </template>
 
 <script setup>
-import { CameraIcon } from 'lucide-vue-next'
+import { CameraIcon } from 'lucide-vue-next';
+import { computed } from 'vue';
 
 // Define props
 const props = defineProps({
@@ -33,7 +35,22 @@ const props = defineProps({
       { text: 'Contact', to: '/contact', href: '#' },
       { text: 'FAQ', to: '/faq', href: '#' }
     ]
+  },
+  isAuthenticated: {
+    type: Boolean,
+    default: false
   }
+});
+
+const displayedNavLinks = computed(() => {
+  const baseLinks = Array.isArray(props.navLinks) ? [...props.navLinks] : [];
+  if (props.isAuthenticated) {
+    const appointmentsLink = { text: 'Appointments', to: '/appointments', href: '#' };
+    if (!baseLinks.some(link => link.text === appointmentsLink.text)) {
+      return [appointmentsLink, ...baseLinks];
+    }
+  }
+  return baseLinks;
 });
 </script>
 

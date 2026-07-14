@@ -63,13 +63,18 @@ const isDragging = ref(false)
 const selectedFile = ref(null)
 const imagePreview = ref(null)
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
-let analysis_prop = ref({
-    name: 'Common Cold',
-    severity: 'low',
-    symptoms: ['Cough', 'Sneezing', 'Runny nose'],
-    remedies: ['Drink warm liquids', 'Rest', 'Gargle'],
-    medicines: ['Paracetamol', 'Ibuprofen'],
-    specialistNumber: '+91 9876543210',
+const analysis_prop = ref({
+    modelDiseaseData: {
+        name: 'Common Cold',
+        severity: 'low',
+        symptoms: ['Cough', 'Sneezing', 'Runny nose'],
+        remedies: ['Drink warm liquids', 'Rest', 'Gargle'],
+        medicines: ['Paracetamol', 'Ibuprofen'],
+        specialistNumber: '+91 9876543210',
+    },
+    modelPredictions: [],
+    geminiPrediction: '',
+    geminiDiseaseData: null
 })
 
 const handleDrop = (e) => {
@@ -106,17 +111,21 @@ const uploadFile = () => {
     if (selectedFile.value) {
         const formData = new FormData()
         formData.append('file', selectedFile.value)
-        // Send the file to the server
-        axios.post('http://localhost:3000/api/test/image', formData)
+        axios.post('http://localhost:3000/api/post/image', formData)
             .then((response) => {
-                console.log(JSON.stringify(response.data));
-                analysis_prop.value = response.data;
+                console.log('API Response:', response.data);
+                const { modelPredictions, modelDiseaseData, geminiPrediction, geminiDiseaseData } = response.data;
+                analysis_prop.value = {
+                    modelDiseaseData,
+                    modelPredictions,
+                    geminiPrediction,
+                    geminiDiseaseData
+                };
                 isAnalyzed.value = true;
             })
             .catch((error) => {
                 console.error('Error uploading file', error)
             })
-        isAnalyzed.value = true;
     }
 }
 
@@ -139,12 +148,17 @@ const handleReanalysis = () => {
     selectedFile.value = null;
     imagePreview.value = null;
     analysis_prop.value = {
-        name: '',
-        severity: '',
-        symptoms: [],
-        remedies: [],
-        medicines: [],
-        specialistNumber: '',
+        modelDiseaseData: {
+            name: '',
+            severity: '',
+            symptoms: [],
+            remedies: [],
+            medicines: [],
+            specialistNumber: '',
+        },
+        modelPredictions: [],
+        geminiPrediction: '',
+        geminiDiseaseData: null
     };
 }
 </script>

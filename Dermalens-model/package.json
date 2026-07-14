@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^4.22.0",
+    "canvas": "^2.11.2"
+  }
+}
