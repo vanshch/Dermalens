@@ -21,11 +21,7 @@ export default createStore({
       state.email = null; // Reset email on logout
       localStorage.removeItem("jwtToken");
       localStorage.removeItem("email"); // Remove email from localStorage on logout
-
-      console.log("LOGOUT mutation executed:", {
-        stateToken: state.token,
-        localStorageToken: localStorage.getItem("jwtToken"),
-      });
+      localStorage.removeItem("isDoctor");
     },
     SET_DOCTOR_STATUS(state, status) {
       state.isDoctor = status;
@@ -45,27 +41,28 @@ export default createStore({
       localStorage.setItem("jwtToken", token);
       localStorage.setItem("isDoctor", isDoctor);
       localStorage.setItem("email", email); // Store email in localStorage
-      console.log(
-        "Email stored in localStorage:",
-        localStorage.getItem("email")
-      ); // Debugging line
     },
     logout({ commit }) {
-      // console.log('Before logout:', localStorage.getItem("jwtToken"));
-
       commit("LOGOUT");
-      console.log("After logout:", localStorage.getItem("jwtToken"));
     },
     checkLoginStatus({ commit }) {
       const token = localStorage.getItem("jwtToken");
       const isDoctor = localStorage.getItem("isDoctor") === "true";
       const email = localStorage.getItem("email"); // Retrieve email from localStorage
       if (token) {
-        commit("SET_LOGGED_IN", true);
-        commit("SET_TOKEN", token);
-        commit("SET_DOCTOR_STATUS", isDoctor);
-        commit("SET_EMAIL", email); // Commit the email to the state
-        console.log("Email retrieved from localStorage:", email); // Debugging line
+        try {
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          if (payload.exp * 1000 < Date.now()) {
+            commit("LOGOUT");
+            return;
+          }
+          commit("SET_LOGGED_IN", true);
+          commit("SET_TOKEN", token);
+          commit("SET_DOCTOR_STATUS", isDoctor);
+          commit("SET_EMAIL", email); // Commit the email to the state
+        } catch (e) {
+          commit("LOGOUT");
+        }
       }
     },
   },

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isAnalyzed" class="w-full max-w-md mx-auto">
+    <div v-if="!isAnalyzed && !isUploading" class="w-full max-w-md mx-auto">
         <label for="file-upload"
             class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-600 border-dashed rounded-lg cursor-pointer bg-gray-800 hover:bg-gray-700 transition-colors duration-300"
             :class="{ 'border-blue-500': isDragging }" @dragenter.prevent="isDragging = true"
@@ -37,15 +37,23 @@
 
         <!-- <button @click="()=>{uploadFile,removeFile}"  -->
         <button @click="uploadFile"
-            class="mt-4 w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded-md shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
-            :disabled="!selectedFile">
-            Upload
+            class="mt-4 w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded-md shadow-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300 flex items-center justify-center"
+            :disabled="!selectedFile || isUploading">
+            <svg v-if="isUploading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ isUploading ? 'Uploading...' : 'Upload' }}
         </button>
+
+        <div v-if="uploadError" class="mt-4 p-3 bg-red-900/50 border border-red-500 rounded-lg text-red-200 text-sm text-center">
+            {{ uploadError }}
+        </div>
     </div>
 
     <div v-else class="w-full max-w-md mx-auto flex flex-col items-center">
-        <analysis :disease="analysis_prop" class="w-full" />
-        <button @click="handleReanalysis"
+        <analysis :disease="analysis_prop" :isLoading="isUploading" class="w-full" />
+        <button v-if="!isUploading" @click="handleReanalysis"
             class="mt-4 w-full max-w-md px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 rounded-md shadow-sm transition-colors duration-300">
             Analyze Another Image
         </button>
@@ -62,6 +70,8 @@ const isAnalyzed = ref(false)
 const isDragging = ref(false)
 const selectedFile = ref(null)
 const imagePreview = ref(null)
+const isUploading = ref(false)
+const uploadError = ref(null)
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const analysis_prop = ref({
     modelDiseaseData: {
@@ -109,9 +119,11 @@ const removeFile = () => {
 
 const uploadFile = () => {
     if (selectedFile.value) {
+        isUploading.value = true;
+        uploadError.value = null;
         const formData = new FormData()
         formData.append('file', selectedFile.value)
-        axios.post('http://localhost:3000/api/post/image', formData)
+        axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/post/image`, formData)
             .then((response) => {
                 console.log('API Response:', response.data);
                 const { modelPredictions, modelDiseaseData, geminiPrediction, geminiDiseaseData } = response.data;
@@ -125,6 +137,10 @@ const uploadFile = () => {
             })
             .catch((error) => {
                 console.error('Error uploading file', error)
+                uploadError.value = error.response?.data?.message || 'Failed to upload image. Please try again.';
+            })
+            .finally(() => {
+                isUploading.value = false;
             })
     }
 }

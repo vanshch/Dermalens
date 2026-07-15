@@ -7,7 +7,6 @@ import rateLimit from "express-rate-limit";
 // Route imports
 import authRoutes from "./routes/authRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
-import testRoutes from "./routes/testRoutes.js";
 import appointmentRoutes from "./routes/appointmentRoutes.js";
 import { verifyToken } from "./middlewares/autherizer.js";
 
@@ -25,7 +24,7 @@ if (!process.env.JWT_SECRET) {
 // Express App Setup
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }));
 
 // Add security headers
 app.use((req, res, next) => {
@@ -75,12 +74,21 @@ connectDB();
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/post", postRoutes); // TODO: Add autherizer middleware
-app.use("/api/test", testRoutes);
 app.use("/api/appointment", appointmentRoutes);
 
 // Base Route
 app.get("/", (req, res) => {
   res.send("Server is ready");
+});
+
+// Centralized error handler middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+    data: null
+  });
 });
 
 // Server Initialization

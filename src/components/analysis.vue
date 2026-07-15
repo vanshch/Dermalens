@@ -1,8 +1,48 @@
 <template>
-  <div class="bg-gray-900 rounded-lg shadow-lg overflow-hidden max-w-md w-full">
+  <div v-if="isLoading" class="bg-gray-900 rounded-lg shadow-lg overflow-hidden max-w-md w-full animate-pulse">
     <div class="p-6 space-y-4">
       <div class="flex items-center justify-between">
-        <h2 class="text-2xl font-bold text-white">{{ disease?.modelDiseaseData?.name || 'Loading...' }}</h2>
+        <div class="h-8 bg-gray-700 rounded w-1/2"></div>
+        <div class="h-6 bg-gray-700 rounded w-1/4"></div>
+      </div>
+      <div class="space-y-2">
+        <div class="h-4 bg-gray-700 rounded w-1/3 mb-2"></div>
+        <div class="h-4 bg-gray-700 rounded w-full"></div>
+        <div class="h-4 bg-gray-700 rounded w-5/6"></div>
+      </div>
+      <div class="space-y-2">
+        <div class="h-4 bg-gray-700 rounded w-1/3 mb-2"></div>
+        <div class="h-4 bg-gray-700 rounded w-full"></div>
+      </div>
+      <div class="space-y-2">
+        <div class="h-4 bg-gray-700 rounded w-1/3 mb-2"></div>
+        <div class="h-4 bg-gray-700 rounded w-full"></div>
+      </div>
+      <div class="space-y-2">
+        <div class="h-4 bg-gray-700 rounded w-1/3 mb-2"></div>
+        <div class="h-4 bg-gray-700 rounded w-1/2"></div>
+      </div>
+    </div>
+    <div class="px-6 py-4 border-t border-gray-800">
+      <div class="h-4 bg-gray-700 rounded w-1/2 mb-2"></div>
+      <div class="space-y-2">
+        <div class="h-4 bg-gray-700 rounded w-full"></div>
+        <div class="h-4 bg-gray-700 rounded w-full"></div>
+      </div>
+    </div>
+    <div class="px-6 py-4 border-t border-gray-800">
+      <div class="h-4 bg-gray-700 rounded w-1/3 mb-2"></div>
+      <div class="h-4 bg-gray-700 rounded w-full"></div>
+    </div>
+    <div class="px-6 py-4 bg-gray-800">
+      <div class="h-10 bg-gray-700 rounded w-full"></div>
+    </div>
+  </div>
+
+  <div v-else class="bg-gray-900 rounded-lg shadow-lg overflow-hidden max-w-md w-full">
+    <div class="p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-white">{{ disease?.modelDiseaseData?.name || 'Unknown' }}</h2>
         <div
           class="px-2 py-1 rounded-full text-xs font-medium"
           :class="{
@@ -18,7 +58,7 @@
       <div class="space-y-2">
         <h3 class="text-sm font-medium text-gray-400">Symptoms</h3>
         <ul class="list-disc list-inside text-gray-300">
-          <li v-for="symptom in getArrayOrSplit(disease.modelDiseaseData.symptoms)" :key="symptom">
+          <li v-for="symptom in getArrayOrSplit(disease?.modelDiseaseData?.symptoms)" :key="symptom">
             {{ symptom }}
           </li>
         </ul>
@@ -27,7 +67,7 @@
       <div class="space-y-2">
         <h3 class="text-sm font-medium text-gray-400">Remedies</h3>
         <ul class="list-disc list-inside text-gray-300">
-          <li v-for="remedy in getArrayOrSplit(disease.modelDiseaseData.remedies)" :key="remedy">
+          <li v-for="remedy in getArrayOrSplit(disease?.modelDiseaseData?.remedies)" :key="remedy">
             {{ remedy }}
           </li>
         </ul>
@@ -36,7 +76,7 @@
       <div class="space-y-2">
         <h3 class="text-sm font-medium text-gray-400">Medicines</h3>
         <ul class="list-disc list-inside text-gray-300">
-          <li v-for="medicine in getArrayOrSplit(disease.modelDiseaseData.medicines)" :key="medicine" class="flex justify-between items-center">
+          <li v-for="medicine in getArrayOrSplit(disease?.modelDiseaseData?.medicines)" :key="medicine" class="flex justify-between items-center">
             {{ medicine }}
           </li>
         </ul>
@@ -44,14 +84,14 @@
       
       <div class="space-y-2">
         <h3 class="text-sm font-medium text-gray-400">Specialist Contact</h3>
-        <p class="text-gray-300">{{ disease.modelDiseaseData.specialistNumber }}</p>
+        <p class="text-gray-300">{{ disease?.modelDiseaseData?.specialistNumber }}</p>
       </div>
     </div>
     
     <div class="px-6 py-4 border-t border-gray-800">
       <h3 class="text-sm font-medium text-gray-400 mb-2">AI Model Predictions</h3>
       <div class="space-y-2">
-        <div v-for="prediction in disease.modelPredictions" :key="prediction.className" 
+        <div v-for="prediction in disease?.modelPredictions" :key="prediction.className" 
              class="flex justify-between items-center text-gray-300">
           <span>{{ prediction.className }}</span>
           <span class="text-blue-400">{{ (prediction.probability * 100).toFixed(2) }}%</span>
@@ -61,7 +101,7 @@
     
     <div class="px-6 py-4 border-t border-gray-800">
       <h3 class="text-sm font-medium text-gray-400 mb-2">Gemini Prediction</h3>
-      <p class="text-gray-300">{{ disease.geminiPrediction }}</p>
+      <p class="text-gray-300">{{ disease?.geminiPrediction }}</p>
     </div>
     
     <div class="px-6 py-4 bg-gray-800">
@@ -132,6 +172,10 @@ const props = defineProps({
       }
     })
   },
+  isLoading: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const makeAppointment = () => {

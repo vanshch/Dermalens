@@ -72,6 +72,7 @@ const appointmentController = {
       if (!doctor) {
         return res.status(404).json({
           success: false,
+          data: null,
           message: "Doctor not found with the provided email",
         });
       }
@@ -147,17 +148,16 @@ const appointmentController = {
         patientEmailHtml
       );
 
-      const responseData = {
+      res.status(201).json({
         success: true,
+        data: { appointmentNumber },
         message: "Appointment created successfully",
-        appointmentNumber,
-      };
-
-      res.status(201).json(responseData);
+      });
     } catch (error) {
       console.error("→ ERROR in create_appointment:", error);
       res.status(500).json({
         success: false,
+        data: null,
         message: "Failed to create appointment",
       });
     }

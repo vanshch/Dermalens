@@ -1,16 +1,14 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from "vue-router";
-import homePage from "../views/home.vue";
-// import loginPage from "../views/login.vue";
-import AboutPage from "../views/about.vue";
-import dashboardPage from "../views/dashboard.vue";
 import LandingPage from "../views/landing.vue";
-import ContactPage from "../views/contact.vue";
-import FaqPage from "../views/faq.vue";
-import appointmentPage from "../views/appointment.vue";
-import commingSoonPage from "../views/commingsoon.vue";
 
-// import registerPage from "../views/register.vue";
+const homePage = () => import("../views/home.vue");
+const AboutPage = () => import("../views/about.vue");
+const dashboardPage = () => import("../views/dashboard.vue");
+const ContactPage = () => import("../views/contact.vue");
+const FaqPage = () => import("../views/faq.vue");
+const appointmentPage = () => import("../views/appointment.vue");
+const commingSoonPage = () => import("../views/commingsoon.vue");
 
 import store from "../store";
 

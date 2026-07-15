@@ -34,9 +34,10 @@
                 </button>
               </div>
             </div>
-            <img alt="Hero" class="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center"
+            <img alt="Hero" class="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center bg-gray-800"
               height="550"
               src="https://plus.unsplash.com/premium_photo-1675869589440-8b3f38dc5fe2?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              @error="$event.target.src='https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=550&q=80'"
               width="550" />
           </div>
         </div>
@@ -104,7 +105,7 @@
     </main>
     <footer
       class="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-700">
-      <p class="text-xs text-gray-400">© 2024 Dermalens. All rights reserved.</p>
+      <p class="text-xs text-gray-400">© {{ new Date().getFullYear() }} Dermalens. All rights reserved.</p>
     </footer>
   </div>
 </template>

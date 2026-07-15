@@ -34,18 +34,18 @@ const authController = {
         typeof password !== "string"
       ) {
         console.log("here");
-        return res.status(400).json({ message: "Invalid input format" });
+        return res.status(400).json({ success: false, data: null, message: "Invalid input format" });
       }
 
       // Sanitize email (convert to lowercase and trim)
       const sanitizedEmail = email.toLowerCase().trim().slice(0, 254);
       if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(sanitizedEmail)) {
-        return res.status(400).json({ message: "Invalid email format" });
+        return res.status(400).json({ success: false, data: null, message: "Invalid email format" });
       }
 
       const user = await User.findOne({ email: sanitizedEmail });
       if (!user) {
-        return res.status(401).json({ message: "Email not found" });
+        return res.status(401).json({ success: false, data: null, message: "Email not found" });
       }
 
       // Compare passwords using bcrypt
@@ -58,7 +58,7 @@ const authController = {
       // console.log(user.password);
       // console.log(isValidPassword);
       if (!isValidPassword) {
-        return res.status(401).json({ message: "Invalid password" });
+        return res.status(401).json({ success: false, data: null, message: "Invalid password" });
       }
 
       const token = jwt.sign(
@@ -70,10 +70,10 @@ const authController = {
       );
 
       // Return token in the expected format
-      res.json({ token });
+      res.json({ success: true, data: { token }, message: "Login successful" });
     } catch (error) {
       console.error("Login error:", error);
-      res.status(500).json({ message: "Server error during login" });
+      res.status(500).json({ success: false, data: null, message: "Server error during login" });
     }
   },
 
@@ -93,26 +93,26 @@ const authController = {
         typeof email !== "string" ||
         typeof password !== "string"
       ) {
-        return res.status(400).json({ message: "Invalid input format" });
+        return res.status(400).json({ success: false, data: null, message: "Invalid input format" });
       }
 
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        return res.status(400).json({ message: "Invalid email format" });
+        return res.status(400).json({ success: false, data: null, message: "Invalid email format" });
       }
 
       // Sanitize inputs
       const sanitizedName = name.trim().slice(0, 100).replace(/[<>]/g, '');
       const sanitizedEmail = email.toLowerCase().trim().slice(0, 254);
       if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(sanitizedEmail)) {
-        return res.status(400).json({ message: "Invalid email format" });
+        return res.status(400).json({ success: false, data: null, message: "Invalid email format" });
       }
 
       // Check if user already exists with sanitized email
       const existingUser = await User.findOne({ email: sanitizedEmail });
       if (existingUser) {
-        return res.status(409).json({ message: "User already exists" });
+        return res.status(409).json({ success: false, data: null, message: "User already exists" });
       }
 
       // Hash password
@@ -126,10 +126,10 @@ const authController = {
       });
 
       await newUser.save();
-      res.status(201).json({ message: "User registered successfully" });
+      res.status(201).json({ success: true, data: null, message: "User registered successfully" });
     } catch (error) {
       console.error("Registration error:", error);
-      res.status(500).json({ message: "Error registering user" });
+      res.status(500).json({ success: false, data: null, message: "Error registering user" });
     }
   },
 };

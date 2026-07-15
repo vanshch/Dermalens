@@ -9,20 +9,39 @@
         </span>
       </div>
 
-      <!-- Navigation Links (dynamically generated) -->
+      <!-- Navigation Links (desktop) -->
       <div class="hidden md:flex space-x-6">
         <a v-for="link in displayedNavLinks" :key="link.text" :href="link.href"
           class="text-gray-300 hover:text-teal-500">
           <router-link :to="link.to">{{ link.text }}</router-link>
         </a>
       </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden flex items-center">
+        <button @click="isMobileMenuOpen = !isMobileMenuOpen" class="text-gray-300 hover:text-white focus:outline-none">
+          <MenuIcon v-if="!isMobileMenuOpen" class="h-6 w-6" />
+          <XIcon v-else class="h-6 w-6" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div v-if="isMobileMenuOpen" class="md:hidden mt-2 pb-2 space-y-1">
+      <router-link v-for="link in displayedNavLinks" :key="link.text" :to="link.to"
+        class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-teal-500 hover:bg-gray-700"
+        @click="isMobileMenuOpen = false">
+        {{ link.text }}
+      </router-link>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { CameraIcon } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { CameraIcon, MenuIcon, XIcon } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
+
+const isMobileMenuOpen = ref(false);
 
 // Define props
 const props = defineProps({
