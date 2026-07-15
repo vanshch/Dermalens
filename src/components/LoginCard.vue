@@ -99,6 +99,24 @@ function validateForm() {
 async function handleSubmit() {
   if (!validateForm()) return;
 
+  // Frontend-only Demo Mode Bypass
+  if (!isRegisterMode.value && formData.email === 'demo@dermalens.com' && formData.password === 'demo123') {
+    const demoToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbW9AZGVybWFsZW5zLmNvbSIsImV4cCI6OTk5OTk5OTk5OX0.demo_signature';
+    setAuthToken(demoToken);
+    store.commit('SET_TOKEN', demoToken);
+    store.commit('SET_LOGGED_IN', true);
+    store.dispatch('login', { token: demoToken, isDoctor: false, email: formData.email });
+    toast.add({
+      severity: 'success',
+      summary: 'Demo Mode Login',
+      detail: 'Logged in to frontend demo mode successfully!',
+      life: 5000,
+      position: 'bottom-center'
+    });
+    router.push('/dashboard');
+    return;
+  }
+
   try {
     const response = isRegisterMode.value
       ? await registerUser(formData)
