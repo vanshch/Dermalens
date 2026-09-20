@@ -20,6 +20,8 @@ export default createStore({
       state.token = null;
       state.email = null; // Reset email on logout
       localStorage.removeItem("jwtToken");
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("token_expiry");
       localStorage.removeItem("email"); // Remove email from localStorage on logout
       localStorage.removeItem("isDoctor");
     },

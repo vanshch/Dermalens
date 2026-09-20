@@ -1,15 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { readFileSync } from "fs";
 import { lookup } from "mime-types";
-import dotenv from "dotenv";
-
-// Configure dotenv at the start
-dotenv.config();
 
 async function analyzeSkinImage(imagePath) {
-  // Get API key from environment variables with proper error handling
-//   const apiKey = process.env.GEMINI_API_KEY;
-  const apiKey = 'AIzaSyBoSFjyIXtZ7mRjA6r5JFP0CrUrSNxX8_0';
+  const apiKey = process.env.GEMINI_API_KEY;
   
   if (!apiKey) {
     throw new Error("Please set the GEMINI_API_KEY environment variable.");
@@ -62,11 +56,5 @@ async function analyzeSkinImage(imagePath) {
   // Remember, this is not a medical diagnosis tool.
   // Consult a dermatologist for accurate diagnosis and treatment.
 }
-
-// Example usage (replace with your image path)
-const imagePath = 'uploads/1732476773776.jpg';
-analyzeSkinImage(imagePath)
-  .then()
-  .catch((error) => console.error("Error:", error));
 
 export { analyzeSkinImage };

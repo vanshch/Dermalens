@@ -1,36 +1,11 @@
-import express from "express";
-import multer from "multer";
-import path from "path";
 import fs from "fs";
 import * as tf from "@tensorflow/tfjs-node";
 import { readFileSync } from "fs";
-const disease = JSON.parse(readFileSync('./backend/data/diseases.json', 'utf8'));
 import { analyzeSkinImage } from "../gemini_test.js";
 
-const CLASS_NAMES = [
-  "Acne and Rosacea",
-  "Actinic Keratosis Basal Cell Carcinoma",
-  "Atopic Dermatitis",
-  "Bullous Disease",
-  "Cellulitis Impetigo",
-  "Eczema",
-  "Exanthems and Drug Eruptions",
-  "Hair Loss Alopecia",
-  "Herpes HPV and STDs",
-  "Light Diseases and Pigmentation",
-  "Lupus and Connective Tissue",
-  "Melanoma Skin Cancer Nevi and Moles",
-  "Nail Fungus and Diseases",
-  "Poison Ivy and Contact Dermatitis",
-  "Psoriasis Lichen Planus",
-  "Scabies Lyme Disease",
-  "Seborrheic Keratoses",
-  "Systemic Disease",
-  "Tinea Ringworm Candidiasis",
-  "Urticaria Hives",
-  "Vascular Tumors",
-const disease = JSON.parse(readFileSync('./backend/data/diseases.json', 'utf8'));
-import { analyzeSkinImage } from "../gemini_test.js";
+const disease = JSON.parse(
+  readFileSync(new URL("../data/diseases.json", import.meta.url), "utf8")
+);
 
 const CLASS_NAMES = [
   "Acne and Rosacea",
@@ -58,7 +33,7 @@ const CLASS_NAMES = [
   "Warts Molluscum"
 ];
 
-const MODEL_PATH = "file://D:/projects/Dermalens/Dermalens-model/model.json";
+const MODEL_PATH = new URL("../../Dermalens-model/model.json", import.meta.url).href;
 
 let cachedModel = null;
 async function loadModel() {

@@ -1,11 +1,15 @@
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
 
-// Hardcoded credentials for testing
-const EMAIL_USER = "vanshchauhan3751@gmail.com"; // Replace with your actual email
-const EMAIL_PASSWORD = "cerv mokk lykp ybuv"; // Replace with your actual app password
+dotenv.config({ path: new URL("../config.env", import.meta.url) });
+
+const { EMAIL_USER, EMAIL_PASS } = process.env;
 
 async function testEmail() {
   try {
+    if (!EMAIL_USER || !EMAIL_PASS) {
+      throw new Error("EMAIL_USER and EMAIL_PASS must be configured");
+    }
     console.log("Testing email functionality...");
     console.log(`Using email: ${EMAIL_USER}`);
     
@@ -14,7 +18,7 @@ async function testEmail() {
       service: "gmail",
       auth: {
         user: EMAIL_USER,
-        pass: EMAIL_PASSWORD
+        pass: EMAIL_PASS
       },
       debug: true // Enable debug logs
     });

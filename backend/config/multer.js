@@ -1,11 +1,14 @@
 import multer from 'multer';
+import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
-console.log("inside the multer")
+const uploadsDirectory = fileURLToPath(new URL('../uploads/', import.meta.url));
+fs.mkdirSync(uploadsDirectory, { recursive: true });
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    cb(null, uploadsDirectory);
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}${path.extname(file.originalname)}`);

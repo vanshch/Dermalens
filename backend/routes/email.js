@@ -3,20 +3,17 @@ import nodemailer from "nodemailer";
 
 const router = express.Router();
 
-// Configure nodemailer with specific credentials
-console.log("here")
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "vchauhan_be23@thapar.edu",
-    pass: "Tell my name",
-  },
-});
-
 // Email sending route
 router.post("/send-email", async (req, res) => {
   try {
     const { to, subject, html } = req.body;
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
     const mailOptions = {
       from: process.env.EMAIL_USER,

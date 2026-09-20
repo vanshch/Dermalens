@@ -57,6 +57,7 @@
 <script setup>
 import { ref } from 'vue'
 import { UploadCloudIcon, FileIcon } from 'lucide-vue-next'
+import axios from 'axios'
 
 const isDragging = ref(false)
 const selectedFile = ref(null)
@@ -85,8 +86,9 @@ const uploadFile = () => {
     const formData = new FormData()
     formData.append('file', selectedFile.value)
     // Send the file to the server
-    axios.post('http://localhost:5000/test/api/post/image', formData)
-      .then(() => {
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
+    axios.post(`${apiBaseUrl}/api/post/image`, formData)
+      .then((response) => {
         console.log(response.data)
         
       })

@@ -58,8 +58,4 @@ async function analyzeSkinImage(imagePath) {
   // Consult a dermatologist for accurate diagnosis and treatment.
 }
 
-// Example usage (replace with your image path)
-const imagePath = "./path/to/your/image.jpg";
-analyzeSkinImage(imagePath)
-  .then(() => console.log("Analysis complete."))
-  .catch((error) => console.error("Error:", error));
+export { analyzeSkinImage };

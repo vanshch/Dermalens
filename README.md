@@ -1,15 +1,17 @@
-# 🔬 Dermalens — AI-Powered Skin Disease Analysis
+# Dermalens — Educational Skin-Image Analysis Demo
 
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
 ![Vue.js](https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vue.js&logoColor=4FC08D)
 ![TensorFlow.js](https://img.shields.io/badge/TensorFlow.js-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 
-> A full-stack application designed for skin disease analysis, combining a modern web interface with machine learning capabilities.
+> A full-stack portfolio prototype combining skin-image classification, an AI-assisted comparison, authentication, and appointment requests.
+
+> **Important:** Dermalens is an educational demonstration, not a medical device. Its output must not be used as a diagnosis or as a substitute for a qualified dermatologist.
 
 ## ✨ Features
 - 🛡️ **User Authentication:** Secure JWT-based registration and login system.
-- 🖼️ **Image Analysis:** Upload skin images and receive AI-powered diagnostic predictions.
+- 🖼️ **Image Analysis:** Upload skin images and compare experimental model outputs.
 - 📅 **Appointment Scheduling:** Connect with specialists and book consultations seamlessly.
 - 📧 **Email Notifications:** Automated alerts and confirmations.
 - 📱 **Responsive Design:** Optimized for both desktop and mobile platforms.
@@ -33,13 +35,13 @@ graph LR
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v16+ recommended)
+- Node.js 20+
 - MongoDB instance (local or Atlas)
 
 ### Clone & Install
 ```bash
-git clone https://github.com/your-username/dermalens.git
-cd dermalens
+git clone https://github.com/vanshch/Dermalens.git
+cd Dermalens
 
 # Install frontend dependencies
 npm install
@@ -55,13 +57,13 @@ npm install
 
 ### Run Dev Servers
 
-#### Backend (runs on port 5000)
+#### Backend (runs on port 3000 by default)
 ```bash
 cd backend
 npm run dev
 ```
 
-#### Frontend (runs on port 3000)
+#### Frontend (runs on port 5173 by default)
 ```bash
 # In the project root directory
 npm run dev
@@ -73,9 +75,11 @@ npm run dev
 |---|---|---|---|
 | `/api/auth/register` | POST | No | Register a new user |
 | `/api/auth/login` | POST | No | Authenticate user & get token |
-| `/api/analysis/predict` | POST | Yes | Upload image & get prediction |
-| `/api/appointments/book` | POST | Yes | Book a consultation |
-| `/api/appointments/` | GET | Yes | Retrieve user's appointments |
+| `/api/post/image` | POST | Yes | Upload an image for experimental analysis |
+| `/api/post/feedback` | POST | Yes | Submit analysis feedback |
+| `/api/appointment/create` | POST | Yes | Create an appointment request |
+
+Protected endpoints require an `Authorization: Bearer <token>` header. The image endpoint accepts multipart form data using the field name `file`.
 
 ## 📁 Project Structure
 

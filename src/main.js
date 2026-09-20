@@ -6,9 +6,11 @@ import Aura from "@primevue/themes/aura";
 import router from "./router/router.js";
 import store from "../src/store/index.js";
 import ToastService from 'primevue/toastservice';
+import { setupAxiosInterceptors } from './utils/auth.js';
 // import { prepareStackTrace } from "postcss/lib/css-syntax-error";
 
 const app = createApp(App);
+setupAxiosInterceptors();
 app.use(PrimeVue, {
   theme: {
     preset: Aura,

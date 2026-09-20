@@ -3,15 +3,16 @@ import dotenv from "dotenv";
 import { doctors } from "../doctors.js"; // Corrected path
 import Doctor from "../models/doctor.js";
 
-const Mongo_uri =
-  "mongodb+srv://Dermalens_admin:DermalensAdmin@vansh.1syrp.mongodb.net/?retryWrites=true&w=majority&appName=vansh";
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: new URL("../config.env", import.meta.url) });
 
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(Mongo_uri);
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI is not configured in backend/config.env");
+    }
+    await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB connected successfully");
     return true;
   } catch (error) {

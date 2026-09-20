@@ -73,6 +73,7 @@ const imagePreview = ref(null)
 const isUploading = ref(false)
 const uploadError = ref(null)
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
 const analysis_prop = ref({
     modelDiseaseData: {
         name: 'Common Cold',
@@ -123,10 +124,10 @@ const uploadFile = () => {
         uploadError.value = null;
         const formData = new FormData()
         formData.append('file', selectedFile.value)
-        axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/post/image`, formData)
+        axios.post(`${API_BASE_URL}/api/post/image`, formData)
             .then((response) => {
                 console.log('API Response:', response.data);
-                const { modelPredictions, modelDiseaseData, geminiPrediction, geminiDiseaseData } = response.data;
+                const { modelPredictions, modelDiseaseData, geminiPrediction, geminiDiseaseData } = response.data.data;
                 analysis_prop.value = {
                     modelDiseaseData,
                     modelPredictions,

@@ -6,20 +6,22 @@ import nodemailer from "nodemailer";
 
 console.log("Appointment controller loaded");
 
-// Create a nodemailer transporter
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "vanshchauhan3751@gmail.com", // Replace with your actual email
-    pass: "cerv mokk lykp ybuv", // Replace with your actual app password
-  },
-});
-
 // Send email function
 const sendAppointmentEmail = async (recipient, subject, htmlContent) => {
   try {
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.warn("Email notification skipped: email credentials are not configured");
+      return false;
+    }
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
     const mailOptions = {
-      from: `"DermaLens" <your_email@gmail.com>`, // Replace with your actual email
+      from: `"DermaLens" <${process.env.EMAIL_USER}>`,
       to: recipient,
       subject: subject,
       html: htmlContent,

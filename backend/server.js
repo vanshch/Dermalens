@@ -8,7 +8,6 @@ import rateLimit from "express-rate-limit";
 import authRoutes from "./routes/authRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import appointmentRoutes from "./routes/appointmentRoutes.js";
-import { verifyToken } from "./middlewares/autherizer.js";
 
 // Environment Configuration
 dotenv.config({
@@ -16,8 +15,8 @@ dotenv.config({
 });
 
 // Add security checks
-if (!process.env.JWT_SECRET) {
-  console.error("JWT_SECRET is not set in environment variables");
+if (!process.env.JWT_SECRET || !process.env.MONGO_URI) {
+  console.error("JWT_SECRET and MONGO_URI must be set in backend/config.env");
   process.exit(1);
 }
 
@@ -61,9 +60,7 @@ const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("MongoDB connected successfully");
-    console.log("MongoDB URI:", process.env.MONGO_URI); // Output the URI
   } catch (error) {
-    console.error("the process env is ", process.env.MONGO_URI);
     console.error("MongoDB connection error:", error);
     process.exit(1);
   }
