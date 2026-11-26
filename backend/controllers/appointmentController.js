@@ -1,6 +1,5 @@
 import Appointment from "../models/appointment.js";
 import { v4 as uuidv4 } from "uuid";
-import mongoose from "mongoose";
 import Doctor from "../models/doctor.js";
 import nodemailer from "nodemailer";
 
@@ -36,20 +35,36 @@ const sendAppointmentEmail = async (recipient, subject, htmlContent) => {
   }
 };
 
+function parseAppointmentDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value ? null : date;
+}
+
 const appointmentController = {
   create_appointment: async (req, res) => {
     console.log("→ Inside create_appointment controller");
-    console.log("→ Request body:", req.body);
 
     try {
       const {
         specialization,
         doctorId,
+        appointmentDate,
         appointmentTime,
         symptoms,
         previousMedication,
         userId,
       } = req.body;
+
+      const date = parseAppointmentDate(appointmentDate);
+      if (!date) {
+        return res.status(400).json({
+          success: false,
+          data: null,
+          message: "Choose a valid appointment date in YYYY-MM-DD format.",
+        });
+      }
 
       // Create a unique appointment number
       const appointmentNumber = uuidv4().substring(0, 8).toUpperCase();
@@ -88,7 +103,7 @@ const appointmentController = {
         userId: sanitizedUserId || "user@example.com", // Use email as userId
         doctorId: validDoctorId,
         specialization,
-        date: new Date(), // Current date
+        date,
         appointmentTime,
         symptoms,
         previousMedication,
@@ -107,7 +122,7 @@ const appointmentController = {
             <p><strong>Appointment Number:</strong> ${appointmentNumber}</p>
             <p><strong>Patient:</strong> ${userId}</p>
             <p><strong>Specialization:</strong> ${specialization}</p>
-            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+            <p><strong>Date:</strong> ${appointmentDate}</p>
             <p><strong>Time:</strong> ${appointmentTime}</p>
             <p><strong>Symptoms:</strong> ${symptoms}</p>
             <p><strong>Previous Medication:</strong> ${
@@ -129,7 +144,7 @@ const appointmentController = {
             <p><strong>Appointment Number:</strong> ${appointmentNumber}</p>
             <p><strong>Doctor:</strong> Dr. ${doctor.name}</p>
             <p><strong>Specialization:</strong> ${specialization}</p>
-            <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+            <p><strong>Date:</strong> ${appointmentDate}</p>
             <p><strong>Time:</strong> ${appointmentTime}</p>
           </div>
           <p>Your appointment is currently pending confirmation from the doctor. You will receive another email once the doctor confirms the appointment.</p>
@@ -152,7 +167,7 @@ const appointmentController = {
 
       res.status(201).json({
         success: true,
-        data: { appointmentNumber },
+        data: { appointmentNumber, appointmentDate },
         message: "Appointment created successfully",
       });
     } catch (error) {
