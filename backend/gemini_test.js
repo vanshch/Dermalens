@@ -1,60 +1,42 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { readFileSync } from "fs";
+import { readFile } from "node:fs/promises";
 import { lookup } from "mime-types";
 
-async function analyzeSkinImage(imagePath) {
-  const apiKey = process.env.GEMINI_API_KEY;
-  
-  if (!apiKey) {
-    throw new Error("Please set the GEMINI_API_KEY environment variable.");
-  }
+const GENERATE_CONTENT_URL = "https://generativelanguage.googleapis.com/v1beta/models/";
+const COMPARISON_TIMEOUT_MS = 10_000;
 
-  // Create a GenerativeAI client
-  const genAI = new GoogleGenerativeAI(apiKey);
+export async function analyzeSkinImage(imagePath) {
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+  const model = process.env.GEMINI_MODEL?.trim();
+  if (!apiKey || !model) return null;
 
-  // Read the image file
-  const imageData = readFileSync(imagePath);
-
-  // Detect the image mime type
   const mimeType = lookup(imagePath);
+  if (!mimeType || !mimeType.startsWith("image/")) return null;
 
-  // Prepare the image data for Gemini
-  const imageBytes = Array.from(imageData);
+  try {
+    const image = await readFile(imagePath);
+    const response = await fetch(`${GENERATE_CONTENT_URL}${encodeURIComponent(model)}:generateContent`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+      signal: AbortSignal.timeout(COMPARISON_TIMEOUT_MS),
+      body: JSON.stringify({
+        contents: [{
+          parts: [
+            { text: "For an educational comparison, return only a possible skin-condition label, or 'none' if unsure. Do not give treatment advice." },
+            { inlineData: { mimeType, data: image.toString("base64") } },
+          ],
+        }],
+      }),
+    });
 
-  // Create a generation config
-  const generationConfig = {
-    temperature: 1,
-    topP: 0.95,
-    topK: 40,
-    maxOutputTokens: 8192,
-  };
+    if (!response.ok) {
+      console.warn(`Gemini comparison unavailable (HTTP ${response.status})`);
+      return null;
+    }
 
-  // Create the GenerativeModel
-  const model = genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
-    generationConfig,
-  });
-
-  // Prompt the model with the image and a question
-  const prompt = "in the next message strictly type just the name of the most probable disease and nothing else . if the image is not indicative of any disease simply respond with 'none'";
-
-  // Send the prompt with the image
-  const result = await model.generateContent([
-    prompt,
-    {
-      inlineData: {
-        data: Buffer.from(imageBytes).toString("base64"),
-        mimeType,
-      },
-    },
-  ]);
-
-  // Extract and return the model's response instead of console logging
-  const textResponse = result.response.text();
-  return textResponse;
-
-  // Remember, this is not a medical diagnosis tool.
-  // Consult a dermatologist for accurate diagnosis and treatment.
+    const { candidates } = await response.json();
+    return candidates?.[0]?.content?.parts?.find(({ text, thought }) => text && !thought)?.text.trim() || null;
+  } catch {
+    console.warn("Gemini comparison unavailable: request could not be completed");
+    return null;
+  }
 }
-
-export { analyzeSkinImage };

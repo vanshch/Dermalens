@@ -100,8 +100,8 @@
     </div>
     
     <div class="px-6 py-4 border-t border-gray-800">
-      <h3 class="text-sm font-medium text-gray-400 mb-2">Gemini Prediction</h3>
-      <p class="text-gray-300">{{ disease?.geminiPrediction }}</p>
+      <h3 class="text-sm font-medium text-gray-400 mb-2">Gemini comparison</h3>
+      <p class="text-gray-300">{{ disease?.geminiPrediction || "Comparison unavailable" }}</p>
     </div>
     
     <div class="px-6 py-4 bg-gray-800">
