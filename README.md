@@ -44,11 +44,11 @@ git clone https://github.com/vanshch/Dermalens.git
 cd Dermalens
 
 # Install frontend dependencies
-npm install
+npm ci
 
 # Install backend dependencies
 cd backend
-npm install
+npm ci
 ```
 
 ### Environment Setup
@@ -58,9 +58,10 @@ npm install
 
 ### Run Dev Servers
 
-#### Backend (runs on port 3000 by default)
+#### Backend (port 3000 with the example configuration)
 ```bash
 cd backend
+npm run seed # Populate the sample doctor directory once.
 npm run dev
 ```
 
@@ -69,6 +70,17 @@ npm run dev
 # In the project root directory
 npm run dev
 ```
+
+## Verification
+
+```sh
+npm ci
+npm --prefix backend ci
+npm run build
+npm --prefix backend test
+```
+
+The API smoke test starts a disposable MongoDB on loopback. The first run downloads a MongoDB test binary, so it needs internet access. It registers a synthetic user, signs in, analyzes a generated image with the bundled model, and verifies that an appointment request preserves the selected date. Gemini calls and email are disabled during tests. GitHub Actions runs the same build and tests for pull requests and updates to `main`.
 
 ## 📡 API Reference
 

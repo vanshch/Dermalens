@@ -9,7 +9,8 @@
     "dev": "nodemon server.js",
     "seed": "node scripts/seedDoctors.js",
     "test:email": "node scripts/testEmail.js",
-    "check": "node --check server.js"
+    "check": "node --check server.js",
+    "test": "node --test \"test/*.test.js\""
   },
   "author": "",
   "license": "ISC",
@@ -31,5 +32,8 @@
     "nodemon": "^3.1.7",
     "sharp": "^0.34.5",
     "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "mongodb-memory-server-core": "^10.4.3"
   }
 }
