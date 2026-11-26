@@ -204,9 +204,6 @@ watch(() => form.appointmentDate, (newDate) => {
 const onSubmit = async () => {
   if (validateForm()) {
     try {
-      // Get user email from Vuex store
-      const userEmail = store.state.email || 'user@example.com'
-
       // Create appointment payload
       const appointmentData = {
         specialization: form.specialization,
@@ -217,8 +214,6 @@ const onSubmit = async () => {
         previousMedication: form.previousMedication || '',
         userId: store.state.email // Use email as userId
       };
-
-      console.log('Sending appointment data:', appointmentData);
 
       // Send request to backend
       const response = await axios.post(
@@ -233,7 +228,9 @@ const onSubmit = async () => {
 
       // Populate confirmation details
       confirmedAppointmentDetails.value = {
-        date: new Date(form.appointmentDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        date: new Date(response.data.data?.appointmentDate ?? form.appointmentDate).toLocaleDateString('en-US', {
+          year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'
+        }),
         time: form.appointmentTime,
         with: selectedDoctor.value?.name || 'N/A'
       };
