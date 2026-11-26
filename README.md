@@ -54,6 +54,7 @@ npm install
 ### Environment Setup
 1. Create a `config.env` in the `backend/` directory (see `backend/config.env.example` for reference).
 2. Create a `.env` in the root directory (see `.env.example` for reference).
+3. The local classifier runs without a Gemini account. To enable the optional comparison, set `GEMINI_API_KEY` and `GEMINI_MODEL` (a supported image-capable model code) in `backend/config.env`. When enabled, Dermalens sends uploaded images to Gemini for this comparison.
 
 ### Run Dev Servers
 

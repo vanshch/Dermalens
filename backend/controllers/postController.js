@@ -35,22 +35,18 @@ const postController = {
     }
 
     try {
-      // Get predictions from both models
-      const [modelPredictions, geminiPrediction] = await Promise.all([
-        getModelPredictions(req.file.path),
-        analyzeSkinImage(req.file.path)
-      ]);
-
+      const modelPredictions = await getModelPredictions(req.file.path);
+      const geminiPrediction = await analyzeSkinImage(req.file.path);
       const top3Predictions = modelPredictions.slice(0, 3);
       const modelDiseaseData = findDiseaseData(disease, top3Predictions[0]?.className);
-      const geminiDiseaseData = findDiseaseData(disease, geminiPrediction);
+      const geminiDiseaseData = geminiPrediction ? findDiseaseData(disease, geminiPrediction) : null;
 
       res.json({
         success: true,
         data: {
           modelPredictions: top3Predictions,
           modelDiseaseData: modelDiseaseData,
-          geminiPrediction: geminiPrediction || "Unknown Condition",
+          geminiPrediction,
           geminiDiseaseData: geminiDiseaseData
         },
         message: "Image analyzed successfully"
