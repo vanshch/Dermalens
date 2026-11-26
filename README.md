@@ -35,7 +35,7 @@ graph LR
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 20+
+- Node.js 22 (see `.nvmrc`)
 - MongoDB instance (local or Atlas)
 
 ### Clone & Install

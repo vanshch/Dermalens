@@ -1,69 +1,10 @@
-import fs from "fs";
-import * as tf from "@tensorflow/tfjs-node";
 import { readFileSync } from "fs";
 import { analyzeSkinImage } from "../gemini_test.js";
+import { getModelPredictions } from "../services/localModel.js";
 
 const disease = JSON.parse(
   readFileSync(new URL("../data/diseases.json", import.meta.url), "utf8")
 );
-
-const CLASS_NAMES = [
-  "Acne and Rosacea",
-  "Actinic Keratosis Basal Cell Carcinoma",
-  "Atopic Dermatitis",
-  "Bullous Disease",
-  "Cellulitis Impetigo",
-  "Eczema",
-  "Exanthems and Drug Eruptions",
-  "Hair Loss Alopecia",
-  "Herpes HPV and STDs",
-  "Light Diseases and Pigmentation",
-  "Lupus and Connective Tissue",
-  "Melanoma Skin Cancer Nevi and Moles",
-  "Nail Fungus and Diseases",
-  "Poison Ivy and Contact Dermatitis",
-  "Psoriasis Lichen Planus",
-  "Scabies Lyme Disease",
-  "Seborrheic Keratoses",
-  "Systemic Disease",
-  "Tinea Ringworm Candidiasis",
-  "Urticaria Hives",
-  "Vascular Tumors",
-  "Vasculitis",
-  "Warts Molluscum"
-];
-
-const MODEL_PATH = new URL("../../Dermalens-model/model.json", import.meta.url).href;
-
-let cachedModel = null;
-async function loadModel() {
-  if (!cachedModel) {
-    cachedModel = await tf.loadLayersModel(MODEL_PATH);
-  }
-  return cachedModel;
-}
-
-async function preprocessImage(imagePath) {
-  const imageBuffer = fs.readFileSync(imagePath);
-  const decodedImage = tf.node.decodeImage(imageBuffer, 3);
-  const resizedImage = tf.image.resizeBilinear(decodedImage, [224, 224]);
-  const normalizedImage = resizedImage.div(255.0);
-  return normalizedImage.expandDims(0);
-}
-
-async function getModelPredictions(imagePath) {
-  const model = await loadModel();
-  const preprocessedImage = await preprocessImage(imagePath);
-  const predictions = model.predict(preprocessedImage);
-  const predictionValues = predictions.dataSync();
-
-  return CLASS_NAMES.map((className, index) => ({
-    className,
-    probability: predictionValues[index],
-  })).sort((a, b) => b.probability - a.probability);
-}
-
-
 
 const defaultDiseaseData = {
   name: "Unknown Condition",
